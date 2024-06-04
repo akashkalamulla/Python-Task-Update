@@ -2,6 +2,7 @@ import os
 import importlib
 
 def discover_models():
+  from app.models import user
   models_dir = os.path.dirname(__file__)
   for filename in os.listdir(models_dir):
     if filename.endswith('.py') and filename !='__init__.py':

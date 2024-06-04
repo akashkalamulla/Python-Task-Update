@@ -5,7 +5,6 @@ from flask_login import LoginManager, AnonymousUserMixin
 from flask_bcrypt import Bcrypt
 from flask_wtf import CSRFProtect
 
-
 db = SQLAlchemy()
 bcrypt = Bcrypt()
 login_manager = LoginManager()
@@ -14,11 +13,14 @@ migrate = Migrate()
 
 class CustomAnonymousUser(AnonymousUserMixin):
     def __init__(self):
-         self.username = 'Guest'
+        self.username = 'Guest'
 
-def create_app():
+def create_app(config_filename=None):
     app = Flask(__name__, template_folder='../templates', static_folder='../static')
-    app.config.from_pyfile('../config/config.py')
+    if config_filename:
+        app.config.from_pyfile(config_filename)
+    else:
+        app.config.from_pyfile('../config/config.py')
 
     db.init_app(app)
     migrate.init_app(app, db)
@@ -30,18 +32,18 @@ def create_app():
     login_manager.login_view = 'web.login'
     login_manager.login_message_category = 'info'
 
-    from .models import discover_models
+    from app.models import discover_models
     discover_models()
 
-    from .models.user import User
+    from app.models.user import User
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(int(user_id))
 
-    from .routes import web
+    from app.routes import web
     app.register_blueprint(web)
 
-    from .middleware import restrict_access
+    from app.middleware import restrict_access
     app.before_request(restrict_access)
 
     return app
