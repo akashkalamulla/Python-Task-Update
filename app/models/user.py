@@ -1,5 +1,5 @@
 from .. import db
-from flask_login import UserMixin
+from flask_login import UserMixin # type: ignore
 
 class User(db.Model, UserMixin):
  __tablename__ = 'users'
