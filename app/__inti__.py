@@ -9,7 +9,7 @@ db = SQLAlchemy()
 bcrypt = Bcrypt()
 login_manager = LoginManager()
 csrf = CSRFProtect()
-migrate = Migrate()  # Add this line
+migrate = Migrate()
 
 class CustomAnonymousUser(AnonymousUserMixin):
     def __init__(self):
@@ -20,7 +20,7 @@ def create_app():
     app.config.from_pyfile('../config/config.py')
 
     db.init_app(app)
-    migrate.init_app(app, db)  # Add this line
+    migrate.init_app(app, db)
     bcrypt.init_app(app)
     login_manager.init_app(app)
     csrf.init_app(app)
