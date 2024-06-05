@@ -15,15 +15,13 @@ class CustomAnonymousUser(AnonymousUserMixin):
     def __init__(self):
         self.username = 'Guest'
 
-def create_app(config_filename=None):
+def create_app():
     app = Flask(__name__, template_folder='../templates', static_folder='../static')
-    if config_filename:
-        app.config.from_pyfile(config_filename)
-    else:
-        app.config.from_pyfile('../config/config.py')
+    app.config.from_pyfile('../config/config.py')
 
     db.init_app(app)
-    migrate.init_app(app, db)
+    migrate = Migrate(app, db)
+    bcrypt = Bcrypt(app)
     bcrypt.init_app(app)
     login_manager.init_app(app)
     csrf.init_app(app)
@@ -47,3 +45,4 @@ def create_app(config_filename=None):
     app.before_request(restrict_access)
 
     return app
+

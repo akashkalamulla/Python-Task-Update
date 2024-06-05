@@ -40,6 +40,7 @@ def submit():
 
 def login():
     if current_user.is_authenticated:
+        flash("You are already logged in.", "info")
         return redirect(url_for('web.dashboard'))
 
     form = LoginForm()
