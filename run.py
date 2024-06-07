@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from app import 
 
 app = create_app('config/config.py')
@@ -6,3 +7,12 @@ if __name__ == '__main__':
     app.run(debug=True)
 
   
+=======
+from app import create_app
+
+app = create_app('config/config.py')
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
+>>>>>>> a2dae55 (commit)
